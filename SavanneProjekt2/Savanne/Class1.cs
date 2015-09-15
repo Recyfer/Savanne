@@ -54,6 +54,8 @@ namespace SavanneProjekt2
         private double weight;
         private bool isAlive;
         private bool gender;
+        private int oldX;
+        private int oldY;
         private int posX;
         private int posY;
         private Random newPosX;
@@ -72,17 +74,41 @@ namespace SavanneProjekt2
         {
             if (animal is Lion)
             {
-                savannah.removeAnimal(posX, posY);
+                oldX = posX;
+                oldY = posY;
                 posX += newPosX.Next(-1, 2);
                 posY += newPosY.Next(-1, 2);
-                savannah.addAnimal(posX, posY, this);
+                if (savannah.field[posX, posY] == null)
+                {
+                    savannah.addAnimal(posX, posY, this);
+                    savannah.removeAnimal(posX, posY);
+                    vicinity();
+                }
+                else
+                {
+                    posX = oldX;
+                    posY = oldY;
+                    Move(this);
+                }
             }
             else if (animal is Rabbit)
             {
-                savannah.removeAnimal(posX, posY);
+                oldX = posX;
+                oldY = posY;
                 posX += newPosX.Next(-2, 3);
                 posY += newPosY.Next(-2, 3);
-                savannah.addAnimal(posX, posY, this);
+                if (savannah.field[posX, posY] == null)
+                {
+                    savannah.addAnimal(posX, posY, this);
+                    savannah.removeAnimal(posX, posY);
+                    vicinity();
+                }
+                else
+                {
+                    posX = oldX;
+                    posY = oldY;
+                    Move(this);
+                }
             }
         }
 
@@ -102,11 +128,11 @@ namespace SavanneProjekt2
                             }
                             else if (this is Lion && savannah.field[posX + i, posY + j].animal is Lion && this.gender == true && savannah.field[posX + i, posY + j].animal.gender == false)
                             {
-                                mate(posX, posY, posX + i, posY + j, savannah.field[posX + i, posY + j].animal);
+                                mate();
                             }
                             else if (this is Rabbit && savannah.field[posX + i, posY + j].animal is Rabbit && this.gender == true && savannah.field[posX + i, posY + j].animal.gender == false)
                             {
-                                mate(posX, posY, posX + i, posY + j, savannah.field[posX + i, posY + j].animal);
+                                mate();
                             }
                         }
                         else if (this is Rabbit && savannah.field[posX + i, posY + j].grass != null)
@@ -133,9 +159,22 @@ namespace SavanneProjekt2
             }
         }
 
-        public void mate(int x1, int y1, int x2, int y2, Animal animal)
+        public void mate()
         {
-            
+            int x = newPosX.Next(0, 20);
+            int y = newPosY.Next((0, 20);
+            if (savannah.field[x, y].animal == null && this is Lion)
+            {
+                savannah.field[x, y].animal = new Lion(savannah);
+            }
+            else if (savannah.field[x, y].animal == null && this is Rabbit)
+            {
+                savannah.field[x, y].animal = new Rabbit(savannah);
+            }
+            else
+            {
+                mate();
+            }
         }
 
 
