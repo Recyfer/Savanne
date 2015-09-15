@@ -17,7 +17,7 @@ namespace SavanneProjekt2
             {
                 for (int j = 0; j < 20; j++)
                 {
-                    field[i,j] = new Field();
+                    field[i, j] = new Field();
                 }
             }
         }
@@ -77,53 +77,65 @@ namespace SavanneProjekt2
                 posY += newPosY.Next(-1, 2);
                 savannah.addAnimal(posX, posY, this);
             }
+            else if (animal is Rabbit)
+            {
+                savannah.removeAnimal(posX, posY);
+                posX += newPosX.Next(-2, 3);
+                posY += newPosY.Next(-2, 3);
+                savannah.addAnimal(posX, posY, this);
+            }
         }
 
-        public void Eat()
+        public void vicinity()
         {
             for (int i = -1; i < 2; i++)
             {
                 for (int j = 1; j < 2; j++)
                 {
-                    if (savannah.field[posX + i, posY + j].animal != null)
+                    if (posX + i != posX && posY + j != posY)
                     {
-                        if (this is Lion && savannah.field[posX + i, posY + j].animal is Rabbit)
+                        if (savannah.field[posX + i, posY + j].animal != null)
                         {
-                            this.weight += savannah.field[posX + i, posY + j].animal.weight;
-                            savannah.removeAnimal(posX + i, posY + j);
+                            if (this is Lion && savannah.field[posX + i, posY + j].animal is Rabbit)
+                            {
+                                eat(posX + i, posY + j);
+                            }
+                            else if (this is Lion && savannah.field[posX + i, posY + j].animal is Lion && this.gender == true && savannah.field[posX + i, posY + j].animal.gender == false)
+                            {
+                                mate(posX, posY, posX + i, posY + j, savannah.field[posX + i, posY + j].animal);
+                            }
+                            else if (this is Rabbit && savannah.field[posX + i, posY + j].animal is Rabbit && this.gender == true && savannah.field[posX + i, posY + j].animal.gender == false)
+                            {
+                                mate(posX, posY, posX + i, posY + j, savannah.field[posX + i, posY + j].animal);
+                            }
                         }
-
-                    }
-                    else if (this is Rabbit && savannah.field[posX + i, posY + j].grass != null)
-                    {
-                        this.weight += savannah.field[posX + i, posY + j].animal.weight;
-                        savannah.removeGrass(posX + i, posY + j);
+                        else if (this is Rabbit && savannah.field[posX + i, posY + j].grass != null)
+                        {
+                            eat(posX + i, posY + j);
+                        }
                     }
                 }
             }
         }
 
-        public void Mate()
+
+        public void eat(int x, int y)
         {
-            for (int i = -1; i < 2; i++)
+            if (this is Lion)
             {
-                for (int j = 1; j < 2; j++)
-                {
-                    if (savannah.field[posX + i, posY + j].animal != null)
-                    {
-                        if (this is Lion && savannah.field[posX + i, posY + j].animal is Lion)
-                        {
-                            savannah.removeAnimal(posX + i, posY + j);
-                            // finish mating method
-                        }
-                        if (this is Rabbit && savannah.field[posX + i, posY + j].animal is Rabbit)
-                        {
-                            savannah.removeAnimal(posX + i, posY + j);
-                            // finish mating method
-                        }
-                    }
-                }
+                this.weight += savannah.field[x, y].animal.weight;
+                savannah.removeAnimal(x, y);
             }
+            else if (this is Rabbit)
+            {
+                this.weight += savannah.field[x, y].grass.weight;
+                savannah.removeGrass(x, y);
+            }
+        }
+
+        public void mate(int x1, int y1, int x2, int y2, Animal animal)
+        {
+            
         }
 
 
@@ -151,18 +163,9 @@ namespace SavanneProjekt2
 
     class Grass
     {
-        private double weight;
+        public double weight;
         private bool isAlive;
 
-        public double Eat()
-        {
-            return weight;
-        }
-
-        //private void remove()
-        //{
-        //    this = null;
-        //}
 
         public void grow()
         {
@@ -170,8 +173,6 @@ namespace SavanneProjekt2
             {
                 weight *= 1.1;
             }
-
-
         }
     }
 }
