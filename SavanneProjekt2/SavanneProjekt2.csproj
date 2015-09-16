@@ -47,7 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Savanne\Class1.cs" />
+    <Compile Include="Savanne\Lion.cs" />
+    <Compile Include="Savanne\Rabbit.cs" />
+    <Compile Include="Savanne\Grass.cs" />
+    <Compile Include="Savanne\Savannah.cs" />
+    <Compile Include="Savanne\Animal.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
