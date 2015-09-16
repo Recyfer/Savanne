@@ -63,16 +63,16 @@ namespace SavanneProjekt2
 
         private Savannah savannah;
 
-        protected Animal(Savannah s)
+        public Animal(Savannah s)
         {
             savannah = s;
             newPosX = new Random();
             newPosY = new Random();
         }
 
-        public void Move(Animal animal)
+        public void move()
         {
-            if (animal is Lion)
+            if (this is Lion)
             {
                 oldX = posX;
                 oldY = posY;
@@ -88,10 +88,10 @@ namespace SavanneProjekt2
                 {
                     posX = oldX;
                     posY = oldY;
-                    Move(this);
+                    move();
                 }
             }
-            else if (animal is Rabbit)
+            else if (this is Rabbit)
             {
                 oldX = posX;
                 oldY = posY;
@@ -107,7 +107,7 @@ namespace SavanneProjekt2
                 {
                     posX = oldX;
                     posY = oldY;
-                    Move(this);
+                    move();
                 }
             }
         }
