@@ -6,7 +6,7 @@ namespace SavanneProjekt2.Savanne
 
     abstract class Animal
     {
-        protected double weight;
+        public double weight;
         protected bool isAlive;
         public bool gender;
         protected int oldX;
@@ -21,8 +21,8 @@ namespace SavanneProjekt2.Savanne
         protected Animal(Savannah s)
         {
             savannah = s;
-            newPosX = new Random();
-            newPosY = new Random();
+            newPosX = s.rand1;
+            newPosY = s.rand2;
             gender = new Random().NextDouble() >= 0.5;
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace SavanneProjekt2.Savanne
 {
@@ -10,15 +11,17 @@ namespace SavanneProjekt2.Savanne
         private bool isAlive;
 
 
-        public Grass()
+        public Grass(Savannah s)
         {
-            weight = 1 + new Random().NextDouble();
+            weight = 1 + s.rand1.NextDouble();
+            isAlive = true;
         }
         public void grow()
         {
             while (isAlive == true)
             {
                 weight *= 1.1;
+                Thread.Sleep(1000);
             }
         }
     }

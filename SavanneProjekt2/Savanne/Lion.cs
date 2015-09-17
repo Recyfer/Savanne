@@ -5,10 +5,10 @@ namespace SavanneProjekt2.Savanne
 {
     internal class Lion : Animal
     {
-        protected Lion(Savannah s)
+        public Lion(Savannah s)
             : base(s)
         {
-            weight = 49 + new Random().NextDouble();
+            weight = 49 + s.rand1.NextDouble();
         }
 
         public void move()
@@ -75,17 +75,10 @@ namespace SavanneProjekt2.Savanne
         {
             while (true)
             {
-                int x = newPosX.Next(0, 20);
-                int y = newPosY.Next((0, 20);
-                if (savannah.field[x, y].animal == null)
+                for (int i = 0; i < 2; i++)
                 {
-                    savannah.field[x, y].animal = new Lion(savannah);
+                    savannah.createLion();
                 }
-                else
-                {
-                    continue;
-                }
-                break;
             }
         }
     }
