@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
@@ -13,13 +14,15 @@ namespace SavanneProjekt2.Savanne
         private int posX;
         private int posY;
         public Field[,] fields = new Field[20, 20];
+        public List<Animal> animalList = new List<Animal>();
+        public List<Grass> grassList = new List<Grass>();
         private PictureBox pictureBox1;
 
         public Savannah(Random random1, Random random2, PictureBox pictBox)
         {
+            pictureBox1 = pictBox;
             rand1 = random1;
             rand2 = random2;
-            pictureBox1 = pictBox;
 
             for (int i = 0; i < 20; i++)
             {
@@ -81,6 +84,7 @@ namespace SavanneProjekt2.Savanne
 
         public void removeAnimal(int x, int y)
         {
+            animalList.Remove(this.fields[x, y].animal);
             this.fields[x, y].animal = null;
         }
 
@@ -89,18 +93,26 @@ namespace SavanneProjekt2.Savanne
             this.fields[x, y].grass = null;
         }
 
-        public void addAnimal(int x, int y, Animal animal)
-        {
-            this.fields[x, y].animal = animal;
-        }
+        //public void addAnimal(int x, int y, Animal animal)
+        //{
+        //    this.fields[x, y].animal = animal;
+        //}
 
         public void addGrass(int x, int y, Grass grass)
         {
             this.fields[x, y].grass = grass;
         }
 
+        public void killAnimal(int x, int y)
+        {
+            
+        }
+
+
+
         public void printAll()
         {
+            Console.Clear();
             foreach (var field1 in fields)
             {
                 if (field1.animal != null)
@@ -109,40 +121,45 @@ namespace SavanneProjekt2.Savanne
                     Console.WriteLine(field1.animal.weight);
                     Console.WriteLine("X er {0}, Y er {1}", field1.animal.posX, field1.animal.posY);
                 }
-                if (field1.grass != null)
-                {
-                    Console.WriteLine(field1.grass.GetType());
-                    Console.WriteLine(field1.grass.weight);
-                }
+                //if (field1.grass != null)
+                //{
+                //    Console.WriteLine(field1.grass.GetType());
+                //    Console.WriteLine(field1.grass.weight);
+                //}
             }
         }
 
         public void createLion()
         {
-            while (true)
-            {
-                getAvailableField().animal = new Lion(this, posX, posY);
-            }
+            Lion tempLion = new Lion(this, posX, posY);
+            animalList.Add(tempLion);
+            getAvailableField().animal = tempLion;
         }
 
         public void createLion(int x, int y)
         {
+            Lion tempLion = new Lion(this, x, y);
             if (fields[x, y].animal == null)
             {
-                fields[x, y].animal = new Lion(this, x, y);
+                animalList.Add(tempLion);
+                fields[x, y].animal = tempLion;
             }
         }
 
         public void createRabbit()
         {
-            getAvailableField().animal = new Rabbit(this, posX, posY);
+            Rabbit tempRabbit = new Rabbit(this, posX, posY);
+            animalList.Add(tempRabbit);
+            getAvailableField().animal = tempRabbit;
         }
 
         public void createRabbit(int x, int y)
         {
+            Rabbit tempRabbit = new Rabbit(this, x, y);
             if (fields[x, y].animal == null)
             {
-                fields[x, y].animal = new Rabbit(this, x, y);
+                animalList.Add(tempRabbit);
+                fields[x, y].animal = tempRabbit;
             }
         }
 
@@ -241,18 +258,26 @@ namespace SavanneProjekt2.Savanne
 
         public void startAll()
         {
-            for (int i = 0; i < 5; i++)
-            {
+            //for (int i = 0; i < 5; i++)
+            //{
                 drawAll();
                 Thread.Sleep(1000);
-                foreach (var field in fields)
+                foreach (var animal in animalList)
                 {
-                    if (field.animal != null)
+                    if (animal != null)
                     {
-                        field.animal.move();
+                        int oldX = animal.posX;
+                        int oldY = animal.posY;
+
+                        animal.move();
+
+                        this.fields[oldX, oldY].animal = null;
+                        this.fields[animal.posX, animal.posY].animal = animal;
+
+                        animal.vicinity();
                     }
                 }
-            }
+            //}
 
         }
 

@@ -30,28 +30,35 @@ namespace SavanneProjekt2.Savanne
 
         public void move()
         {
+            //Console.WriteLine("{0} og {1}", posX, posY);
+            //Console.WriteLine("Speed er {0}",speed);
             int x;
             int y;
             do
             {
                 x = this.posX;
                 y = this.posY;
-                posX += newPosX.Next(-speed, speed + 1);
-                posY += newPosY.Next(-speed, speed + 1);
+                x += newPosX.Next(-speed, speed + 1);
+                y += newPosY.Next(-speed, speed + 1);
 
-                posX = Math.Max(posX, 0); // Nu går dyret aldrig udover venstre kant
-                posX = Math.Min(posX, 19); // Nu går dyret aldrig udover højre kant
-                posY = Math.Max(posY, 0); // Nu går dyret aldrig udover toppen
-                posY = Math.Min(posY, 19); // Nu går dyret aldrig udover bunden
+                x = Math.Max(x, 0); // Nu går dyret aldrig udover venstre kant
+                x = Math.Min(x, 19); // Nu går dyret aldrig udover højre kant
+                y = Math.Max(y, 0); // Nu går dyret aldrig udover toppen
+                y = Math.Min(y, 19); // Nu går dyret aldrig udover bunden
 
-            } while (savannah.fields[x, y] != null);
+            } while (savannah.fields[x, y] == null);
+
+            
+
+            //savannah.addAnimal(posX, posY, this);
+            //savannah.removeAnimal(x, y);
 
             this.posX = x;
             this.posY = y;
-
-            savannah.addAnimal(posX, posY, this);
-            savannah.removeAnimal(posX, posY);
+            //Console.WriteLine("{0} og {1}", posX, posY);
         }
+
+        public abstract void vicinity();
 
         /*
         public void vicinity()

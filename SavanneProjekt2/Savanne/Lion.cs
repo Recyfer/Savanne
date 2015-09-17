@@ -13,15 +13,15 @@ namespace SavanneProjekt2.Savanne
         }
 
 
-        public void vicinity()
+        public override void vicinity()
         {
             for (int i = -1; i < 2; i++)
             {
-                for (int j = 1; j < 2; j++)
+                for (int j = -1; j < 2; j++)
                 {
                     if (posX + i < 0 || posY + j < 0 || posX + i > 19 || posY + j > 19)
                     {
-
+                        continue;
                     }
                     else
                     {

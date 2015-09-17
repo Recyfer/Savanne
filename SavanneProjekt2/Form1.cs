@@ -51,6 +51,8 @@ namespace SavanneProjekt2
         private void startButton_Click(object sender, EventArgs e)
         {
             savannah.startAll();
+
+            //savannah.printAll();
         }
     }
 }
