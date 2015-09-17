@@ -11,8 +11,8 @@ namespace SavanneProjekt2.Savanne
         public bool gender;
         protected int oldX;
         protected int oldY;
-        protected int posX;
-        protected int posY;
+        public int posX;
+        public int posY;
         protected Random newPosX;
         protected Random newPosY;
 

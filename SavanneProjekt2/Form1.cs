@@ -7,38 +7,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SavanneProjekt2.Savanne;
 
 namespace SavanneProjekt2
 {
     public partial class Form1 : Form
     {
-        private Bitmap bmp;
-        private Graphics grp;
-        private int x = 0;
-        private int y = 0;
+        private Random rand;
+        private Random rand2;
+        private Savannah savannah;
         public Form1()
         {
             InitializeComponent();
-        }
+            rand = new Random();
+            rand2 = new Random(DateTime.Now.Millisecond + 5);
 
-        private void startButton_Click(object sender, EventArgs e)
-        {
-            bmp = new Bitmap(pictureBox1.Width,pictureBox1.Height);
-            grp = Graphics.FromImage(bmp);
-            grp.Clear(Color.White);
-            Pen p = new Pen(Color.Black);
+            savannah = new Savannah(rand, rand2, pictureBox1);
+
+            savannah.printAll();
+            Console.WriteLine("----------------------------------------");
             for (int i = 0; i < 20; i++)
             {
                 for (int j = 0; j < 20; j++)
                 {
-                    grp.DrawRectangle(p, x, y, 20, 20);
-                    x += 20;
+                    if (savannah.fields[i, j].animal is Lion)
+                    {
+                        Console.Write("L ");
+                    }
+                    if (savannah.fields[i, j].animal is Rabbit)
+                    {
+                        Console.Write("R ");
+                    }
+                    if (savannah.fields[i, j].animal == null)
+                    {
+                        Console.Write("  ");
+                    }
                 }
-                y += 20;
-                x = 0;
+                Console.WriteLine("|");
             }
-            grp.DrawRectangle(p,x,y,20,20);
-            pictureBox1.Image = bmp;
+            Console.WriteLine("----------------------------------------");
+        }
+
+        private void startButton_Click(object sender, EventArgs e)
+        {
+            savannah.drawGrid();
+            savannah.drawGrass();
+            savannah.drawAnimals();
         }
     }
 }

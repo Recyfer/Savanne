@@ -9,12 +9,16 @@ namespace SavanneProjekt2.Savanne
     {
         public double weight;
         private bool isAlive;
+        public int posX;
+        public int posY;
 
 
-        public Grass(Savannah s)
+        public Grass(Savannah s, int x, int y)
         {
             weight = 1 + s.rand1.NextDouble();
             isAlive = true;
+            posX = x;
+            posY = y;
         }
         public void grow()
         {

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using SavanneProjekt2;
 
 namespace SavanneProjekt2.Savanne
 {
@@ -8,18 +11,20 @@ namespace SavanneProjekt2.Savanne
         public Random rand2;
         private int posX;
         private int posY;
-        public Field[,] field = new Field[20, 20];
+        public Field[,] fields = new Field[20, 20];
+        private PictureBox pictureBox1;
 
-        public Savannah(Random random1, Random random2)
+        public Savannah(Random random1, Random random2, PictureBox pictBox)
         {
             rand1 = random1;
             rand2 = random2;
+            pictureBox1 = pictBox;
 
             for (int i = 0; i < 20; i++)
             {
                 for (int j = 0; j < 20; j++)
                 {
-                    field[i, j] = new Field();
+                    fields[i, j] = new Field();
                 }
             }
 
@@ -27,7 +32,7 @@ namespace SavanneProjekt2.Savanne
             {
                 posX = rand1.Next(0, 20);
                 posY = rand2.Next(0, 20);
-                if (field[posX, posY].animal == null)
+                if (fields[posX, posY].animal == null)
                 {
                     createLion(posX, posY);
                 }
@@ -41,7 +46,7 @@ namespace SavanneProjekt2.Savanne
             {
                 posX = rand1.Next(0, 20);
                 posY = rand2.Next(0, 20);
-                if (field[posX, posY].animal == null)
+                if (fields[posX, posY].animal == null)
                 {
                     createRabbit(posX, posY);
                 }
@@ -55,7 +60,7 @@ namespace SavanneProjekt2.Savanne
             {
                 posX = rand1.Next(0, 20);
                 posY = rand2.Next(0, 20);
-                if (field[posX, posY].grass == null)
+                if (fields[posX, posY].grass == null)
                 {
                     createGrass(posX, posY);
                 }
@@ -74,36 +79,36 @@ namespace SavanneProjekt2.Savanne
             {
                 posX = rand1.Next(0, 20);
                 posY = rand2.Next(0, 20);
-                if (field[posX, posY].animal == null)
+                if (fields[posX, posY].animal == null)
                 {
-                    return field[posX, posY];
+                    return fields[posX, posY];
                 }
             }
         }
 
         public void removeAnimal(int x, int y)
         {
-            this.field[x, y].animal = null;
+            this.fields[x, y].animal = null;
         }
 
         public void removeGrass(int x, int y)
         {
-            this.field[x, y].grass = null;
+            this.fields[x, y].grass = null;
         }
 
         public void addAnimal(int x, int y, Animal animal)
         {
-            this.field[x, y].animal = animal;
+            this.fields[x, y].animal = animal;
         }
 
         public void addGrass(int x, int y, Grass grass)
         {
-            this.field[x, y].grass = grass;
+            this.fields[x, y].grass = grass;
         }
 
         public void printAll()
         {
-            foreach (var field1 in field)
+            foreach (var field1 in fields)
             {
                 if (field1.animal != null)
                 {
@@ -122,46 +127,28 @@ namespace SavanneProjekt2.Savanne
         {
             while (true)
             {
-                    getAvailableField().animal = new Lion(this, posX, posY);
+                getAvailableField().animal = new Lion(this, posX, posY);
             }
         }
 
         public void createLion(int x, int y)
         {
-            posX = x;
-            posY = y;
-            if (field[x, y].animal == null)
+            if (fields[x, y].animal == null)
             {
-                field[x, y].animal = new Lion(this, x, y);
+                fields[x, y].animal = new Lion(this, x, y);
             }
         }
 
         public void createRabbit()
         {
-            while (true)
-            {
-                posX = rand1.Next(0, 20);
-                posY = rand2.Next(0, 20);
-                if (field[posX, posY].animal == null)
-                {
-                    field[posX, posY].animal = new Rabbit(this, posX, posY);
-                }
-                else if (field[posX, posY].animal != null)
-                {
-                    continue;
-                }
-                break;
-            }
+            getAvailableField().animal = new Rabbit(this, posX, posY);
         }
 
         public void createRabbit(int x, int y)
         {
-
-            posX = x;
-            posY = y;
-            if (field[posX, posY].animal == null)
+            if (fields[x, y].animal == null)
             {
-                field[posX, posY].animal = new Rabbit(this, posX, posY);
+                fields[x, y].animal = new Rabbit(this, x, y);
             }
         }
 
@@ -171,11 +158,11 @@ namespace SavanneProjekt2.Savanne
             {
                 posX = rand1.Next(0, 20);
                 posY = rand2.Next(0, 20);
-                if (field[posX, posY].grass == null)
+                if (fields[posX, posY].grass == null)
                 {
-                    field[posX, posY].grass = new Grass(this);
+                    fields[posX, posY].grass = new Grass(this, posX, posY);
                 }
-                else if (field[posX, posY].grass != null)
+                else if (fields[posX, posY].grass != null)
                 {
                     continue;
                 }
@@ -187,9 +174,67 @@ namespace SavanneProjekt2.Savanne
         {
             posX = x;
             posY = y;
-            if (field[posX, posY].grass == null)
+            if (fields[posX, posY].grass == null)
             {
-                field[posX, posY].grass = new Grass(this);
+                fields[posX, posY].grass = new Grass(this, x, y);
+            }
+        }
+            Bitmap bmp;
+            Graphics grp;
+                    
+        public void drawGrid()
+        {
+
+            int x = 0;
+            int y = 0;
+            bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            grp = Graphics.FromImage(bmp);
+            grp.Clear(Color.White);
+            Pen p = new Pen(Color.Black);
+            for (int i = 0; i < 20; i++)
+            {
+                for (int j = 0; j < 20; j++)
+                {
+                    grp.DrawRectangle(p, x, y, 20, 20);
+                    x += 20;
+                }
+                y += 20;
+                x = 0;
+            }
+            grp.DrawRectangle(p, x, y, 20, 20);
+            pictureBox1.Image = bmp;
+        }
+
+        public void drawAnimals()
+        {
+            Pen penLion = new Pen(Color.Red, 10);
+            Pen penRabbit = new Pen(Color.Blue, 10);
+            foreach (var field in fields)
+            {
+                if (field.animal != null)
+                {
+                    if (field.animal is Lion)
+                    {
+                        grp.DrawRectangle(penLion, (field.animal.posY*20 + 1 + 4), (field.animal.posX*20 + 1 + 4), 10, 10);
+                    }
+
+                    if (field.animal is Rabbit)
+                    {
+                        grp.DrawRectangle(penRabbit, (field.animal.posY*20 + 1 + 4), (field.animal.posX*20 + 1 + 4), 10, 10);
+                    }
+                }
+            }
+        }
+
+        public void drawGrass()
+        {
+            Pen penGrass = new Pen(Color.Green, 10);
+            foreach (var field in fields)
+            {
+                if (field.grass != null)
+                {
+                        grp.DrawRectangle(penGrass, (field.grass.posY * 20 + 1 + 4), (field.grass.posX * 20 + 1 + 4), 10, 10);
+                }
             }
         }
 

@@ -24,7 +24,7 @@ namespace SavanneProjekt2.Savanne
                     posY += newPosY.Next(-1, 2);
                     if (posX >= 0 && posX <= 19 && posY >= 0 && posY <= 19)
                     {
-                        if (savannah.field[posX, posY] == null)
+                        if (savannah.fields[posX, posY] == null)
                         {
                             savannah.addAnimal(posX, posY, this);
                             savannah.removeAnimal(posX, posY);
@@ -62,14 +62,14 @@ namespace SavanneProjekt2.Savanne
                     {
                         if (posX + i != posX && posY + j != posY)
                         {
-                            if (savannah.field[posX + i, posY + j].animal != null)
+                            if (savannah.fields[posX + i, posY + j].animal != null)
                             {
-                                if (savannah.field[posX + i, posY + j].animal is Rabbit)
+                                if (savannah.fields[posX + i, posY + j].animal is Rabbit)
                                 {
                                     eat(posX + i, posY + j);
                                 }
-                                else if (savannah.field[posX + i, posY + j].animal is Lion && gender == true &&
-                                         savannah.field[posX + i, posY + j].animal.gender == false)
+                                else if (savannah.fields[posX + i, posY + j].animal is Lion && gender == true &&
+                                         savannah.fields[posX + i, posY + j].animal.gender == false)
                                 {
                                     mate();
                                 }
@@ -82,7 +82,7 @@ namespace SavanneProjekt2.Savanne
 
         public void eat(int x, int y)
         {
-            this.weight += savannah.field[x, y].animal.weight;
+            this.weight += savannah.fields[x, y].animal.weight;
             savannah.removeAnimal(x, y);
         }
 
