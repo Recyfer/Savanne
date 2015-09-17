@@ -15,9 +15,7 @@ namespace SavanneProjekt2
         [STAThread]
         static void Main()
         {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
+
             var rand = new Random();
             var rand2 = new Random(DateTime.Now.Millisecond + 5);
 
@@ -48,6 +46,10 @@ namespace SavanneProjekt2
 
 
             Console.Read();
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
         }
     }
 
