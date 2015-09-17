@@ -29,46 +29,38 @@ namespace SavanneProjekt2.Savanne
                 }
             }
 
-            for (int i = 0; i < random1.Next(3, 6); i++)
+            for (int i = 0; i < random1.Next(3, 6);)
             {
                 posX = rand1.Next(0, 20);
                 posY = rand2.Next(0, 20);
                 if (fields[posX, posY].animal == null)
                 {
                     createLion(posX, posY);
-                }
-                else
-                {
-                    i--;
+                    i++;
                 }
             }
 
-            for (int i = 0; i < random1.Next(5, 10); i++)
+            for (int i = 0; i < random1.Next(5, 10);)
             {
                 posX = rand1.Next(0, 20);
                 posY = rand2.Next(0, 20);
                 if (fields[posX, posY].animal == null)
                 {
                     createRabbit(posX, posY);
-                }
-                else
-                {
-                    i--;
+                    i++;
                 }
             }
 
-            for (int i = 0; i < random1.Next(5, 10); i++)
+            for (int i = 0; i < random1.Next(5, 10);)
             {
                 posX = rand1.Next(0, 20);
                 posY = rand2.Next(0, 20);
                 if (fields[posX, posY].grass == null)
                 {
                     createGrass(posX, posY);
+                    i++;
                 }
-                else
-                {
-                    i--;
-                }
+
             }
 
 
