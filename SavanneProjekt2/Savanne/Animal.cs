@@ -9,12 +9,12 @@ namespace SavanneProjekt2.Savanne
         public double weight;
         protected bool isAlive;
         public bool gender;
-        protected int oldX;
-        protected int oldY;
         public int posX;
         public int posY;
+        protected int speed;
         protected Random newPosX;
         protected Random newPosY;
+
 
         protected Savannah savannah;
 
@@ -28,7 +28,30 @@ namespace SavanneProjekt2.Savanne
             gender = new Random().NextDouble() >= 0.5;
         }
 
-        abstract public void move();
+        public void move()
+        {
+            int x;
+            int y;
+            do
+            {
+                x = this.posX;
+                y = this.posY;
+                posX += newPosX.Next(-speed, speed + 1);
+                posY += newPosY.Next(-speed, speed + 1);
+
+                posX = Math.Max(posX, 0); // Nu går dyret aldrig udover venstre kant
+                posX = Math.Min(posX, 19); // Nu går dyret aldrig udover højre kant
+                posY = Math.Max(posY, 0); // Nu går dyret aldrig udover toppen
+                posY = Math.Min(posY, 19); // Nu går dyret aldrig udover bunden
+
+            } while (savannah.fields[x, y] != null);
+
+            this.posX = x;
+            this.posY = y;
+
+            savannah.addAnimal(posX, posY, this);
+            savannah.removeAnimal(posX, posY);
+        }
 
         /*
         public void vicinity()

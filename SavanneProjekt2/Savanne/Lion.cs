@@ -9,37 +9,9 @@ namespace SavanneProjekt2.Savanne
             : base(s, x, y)
         {
             weight = 49 + s.rand1.NextDouble();
-            //move();
+            speed = 1;
         }
 
-        public override void move()
-        {
-            oldX = posX;
-            oldY = posY;
-            posX += newPosX.Next(-1, 2);
-            posY += newPosY.Next(-1, 2);
-            if (posX > -1 && posX < 20 && posY > -1 && posY < 20)
-            {
-                if (savannah.fields[posX, posY] == null)
-                {
-                    savannah.addAnimal(posX, posY, this);
-                    savannah.removeAnimal(posX, posY);
-                    //vicinity();
-                }
-                else
-                {
-                    posX = oldX;
-                    posY = oldY;
-                    //move();
-                }
-            }
-            else
-            {
-                posX = oldX;
-                posY = oldY;
-            }
-
-        }
 
         public void vicinity()
         {
@@ -81,12 +53,9 @@ namespace SavanneProjekt2.Savanne
 
         public void mate()
         {
-            while (true)
+            for (int i = 0; i < 2; i++)
             {
-                for (int i = 0; i < 2; i++)
-                {
-                    savannah.createLion();
-                }
+                savannah.createLion();
             }
         }
     }
