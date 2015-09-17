@@ -9,10 +9,11 @@ namespace SavanneProjekt2.Savanne
 {
     internal class Rabbit : Animal
     {
-        public Rabbit(Savannah s)
-            : base(s)
+        public Rabbit(Savannah s, int x, int y)
+            : base(s, x, y)
         {
             weight = 9 + s.rand1.NextDouble();
+            //move();
         }
 
         public void move()

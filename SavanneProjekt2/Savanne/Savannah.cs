@@ -68,6 +68,19 @@ namespace SavanneProjekt2.Savanne
 
         }
 
+        protected Field getAvailableField()
+        {
+            while (true)
+            {
+                posX = rand1.Next(0, 20);
+                posY = rand2.Next(0, 20);
+                if (field[posX, posY].animal == null)
+                {
+                    return field[posX, posY];
+                }
+            }
+        }
+
         public void removeAnimal(int x, int y)
         {
             this.field[x, y].animal = null;
@@ -109,17 +122,7 @@ namespace SavanneProjekt2.Savanne
         {
             while (true)
             {
-                posX = rand1.Next(0, 20);
-                posY = rand2.Next(0, 20);
-                if (field[posX, posY].animal == null)
-                {
-                    field[posX, posY].animal = new Lion(this);
-                }
-                else if (field[posX, posY].animal != null)
-                {
-                    continue;
-                }
-                break;
+                    getAvailableField().animal = new Lion(this, posX, posY);
             }
         }
 
@@ -127,9 +130,9 @@ namespace SavanneProjekt2.Savanne
         {
             posX = x;
             posY = y;
-            if (field[posX, posY].animal == null)
+            if (field[x, y].animal == null)
             {
-                field[posX, posY].animal = new Lion(this);
+                field[x, y].animal = new Lion(this, x, y);
             }
         }
 
@@ -141,7 +144,7 @@ namespace SavanneProjekt2.Savanne
                 posY = rand2.Next(0, 20);
                 if (field[posX, posY].animal == null)
                 {
-                    field[posX, posY].animal = new Rabbit(this);
+                    field[posX, posY].animal = new Rabbit(this, posX, posY);
                 }
                 else if (field[posX, posY].animal != null)
                 {
@@ -158,7 +161,7 @@ namespace SavanneProjekt2.Savanne
             posY = y;
             if (field[posX, posY].animal == null)
             {
-                field[posX, posY].animal = new Rabbit(this);
+                field[posX, posY].animal = new Rabbit(this, posX, posY);
             }
         }
 

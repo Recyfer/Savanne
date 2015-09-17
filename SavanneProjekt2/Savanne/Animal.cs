@@ -18,13 +18,16 @@ namespace SavanneProjekt2.Savanne
 
         protected Savannah savannah;
 
-        protected Animal(Savannah s)
+        protected Animal(Savannah s, int x, int y)
         {
             savannah = s;
             newPosX = s.rand1;
             newPosY = s.rand2;
+            posX = x;
+            posY = y;
             gender = new Random().NextDouble() >= 0.5;
         }
+
 
 
         /*
