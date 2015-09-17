@@ -16,27 +16,31 @@ namespace SavanneProjekt2.Savanne
             //move();
         }
 
-        public void move()
+        public override void move()
         {
-            while (true)
+            oldX = posX;
+            oldY = posY;
+            posX += newPosX.Next(-2, 3);
+            posY += newPosY.Next(-2, 3);
+            if (posX > -1 && posX < 20 && posY > -1 && posY < 20)
             {
-                oldX = posX;
-                oldY = posY;
-                posX += newPosX.Next(-2, 3);
-                posY += newPosY.Next(-2, 3);
                 if (savannah.fields[posX, posY] == null)
                 {
                     savannah.addAnimal(posX, posY, this);
                     savannah.removeAnimal(posX, posY);
-                    vicinity();
+                    //vicinity();
                 }
                 else
                 {
                     posX = oldX;
                     posY = oldY;
-                    move();
+                    //move();
                 }
-                Thread.Sleep(3000);
+            }
+            else
+            {
+                posX = oldX;
+                posY = oldY;
             }
         }
 

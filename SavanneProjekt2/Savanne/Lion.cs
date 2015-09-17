@@ -6,46 +6,39 @@ namespace SavanneProjekt2.Savanne
     internal class Lion : Animal
     {
         public Lion(Savannah s, int x, int y)
-            : base(s,x,y)
+            : base(s, x, y)
         {
             weight = 49 + s.rand1.NextDouble();
             //move();
         }
 
-        public void move()
+        public override void move()
         {
-            while (true)
+            oldX = posX;
+            oldY = posY;
+            posX += newPosX.Next(-1, 2);
+            posY += newPosY.Next(-1, 2);
+            if (posX > -1 && posX < 20 && posY > -1 && posY < 20)
             {
-                while (true)
+                if (savannah.fields[posX, posY] == null)
                 {
-                    oldX = posX;
-                    oldY = posY;
-                    posX += newPosX.Next(-1, 2);
-                    posY += newPosY.Next(-1, 2);
-                    if (posX >= 0 && posX <= 19 && posY >= 0 && posY <= 19)
-                    {
-                        if (savannah.fields[posX, posY] == null)
-                        {
-                            savannah.addAnimal(posX, posY, this);
-                            savannah.removeAnimal(posX, posY);
-                            vicinity();
-                        }
-                        else
-                        {
-                            posX = oldX;
-                            posY = oldY;
-                            continue;
-                        }
-                        break;
-                    }
-                    else
-                    {
-                        posX = oldX;
-                        posY = oldY;
-                    }
+                    savannah.addAnimal(posX, posY, this);
+                    savannah.removeAnimal(posX, posY);
+                    //vicinity();
                 }
-                Thread.Sleep(3000);
+                else
+                {
+                    posX = oldX;
+                    posY = oldY;
+                    //move();
+                }
             }
+            else
+            {
+                posX = oldX;
+                posY = oldY;
+            }
+
         }
 
         public void vicinity()

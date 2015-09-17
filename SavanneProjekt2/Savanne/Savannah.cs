@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using SavanneProjekt2;
 
@@ -114,6 +115,7 @@ namespace SavanneProjekt2.Savanne
                 {
                     Console.WriteLine(field1.animal.GetType());
                     Console.WriteLine(field1.animal.weight);
+                    Console.WriteLine("X er {0}, Y er {1}", field1.animal.posX, field1.animal.posY);
                 }
                 if (field1.grass != null)
                 {
@@ -236,6 +238,30 @@ namespace SavanneProjekt2.Savanne
                         grp.DrawRectangle(penGrass, (field.grass.posY * 20 + 1 + 4), (field.grass.posX * 20 + 1 + 4), 10, 10);
                 }
             }
+        }
+
+        public void drawAll()
+        {
+            drawGrid();
+            drawGrass();
+            drawAnimals();
+        }
+
+        public void startAll()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                drawAll();
+                Thread.Sleep(1000);
+                foreach (var field in fields)
+                {
+                    if (field.animal != null)
+                    {
+                        field.animal.move();
+                    }
+                }
+            }
+
         }
 
     }

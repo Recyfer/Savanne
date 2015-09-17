@@ -28,7 +28,7 @@ namespace SavanneProjekt2.Savanne
             gender = new Random().NextDouble() >= 0.5;
         }
 
-
+        abstract public void move();
 
         /*
         public void vicinity()
