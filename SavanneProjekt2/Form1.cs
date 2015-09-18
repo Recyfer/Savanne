@@ -53,7 +53,10 @@ namespace SavanneProjekt2
 
         void Form1_Closing(object sender, EventArgs e)
         {
-            thread.Abort();
+            if (thread.IsAlive)
+            {
+                thread.Abort();
+            }
         }
 
         private Thread thread;

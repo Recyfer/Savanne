@@ -33,7 +33,7 @@ namespace SavanneProjekt2.Savanne
                 }
             }
 
-            for (int i = 0; i < random1.Next(3, 6); )
+            for (int i = 0; i < random1.Next(4, 7); )
             {
                 posX = rand1.Next(0, 20);
                 posY = rand2.Next(0, 20);
@@ -250,18 +250,18 @@ namespace SavanneProjekt2.Savanne
         {
             Pen penLion = new Pen(Color.Red, 10);
             Pen penRabbit = new Pen(Color.Blue, 10);
-            foreach (var animal in animalList)
+            for(int i = 0; i < animalList.Count; i++)
             {
-                if (animal != null)
+                if (animalList[i] != null)
                 {
-                    if (animal is Lion)
+                    if (animalList[i] is Lion)
                     {
-                        grp.DrawRectangle(penLion, (animal.posY * 20 + 1 + 4), (animal.posX * 20 + 1 + 4), 10, 10);
+                        grp.DrawRectangle(penLion, (animalList[i].posY * 20 + 5), (animalList[i].posX * 20 + 5), 10, 10);
                     }
 
-                    if (animal is Rabbit)
+                    if (animalList[i] is Rabbit)
                     {
-                        grp.DrawRectangle(penRabbit, (animal.posY * 20 + 1 + 4), (animal.posX * 20 + 1 + 4), 10, 10);
+                        grp.DrawRectangle(penRabbit, (animalList[i].posY * 20 + 5), (animalList[i].posX * 20 + 5), 10, 10);
                     }
                 }
             }
@@ -284,6 +284,7 @@ namespace SavanneProjekt2.Savanne
             drawGrid();
             drawGrass();
             drawAnimals();
+            Thread.Sleep(10);
         }
 
         public void startAll()
@@ -293,6 +294,10 @@ namespace SavanneProjekt2.Savanne
             {
 
                 Thread.Sleep(100);
+                for (int j = 0; j < animalList.Count; j++)
+                {
+                    animalList[j].vicinity();
+                }
                 for (int i = 0; i < animalList.Count; i++)
                 {
                     if (animalList[i] != null)
@@ -306,10 +311,7 @@ namespace SavanneProjekt2.Savanne
                         this.fields[animalList[i].posX, animalList[i].posY].animal = animalList[i];
                     }
                 }
-                for (int j = 0; j < animalList.Count; j++)
-                {
-                    animalList[j].vicinity();
-                }
+
             }
 
         }

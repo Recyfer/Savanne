@@ -34,25 +34,27 @@ namespace SavanneProjekt2.Savanne
             //Console.WriteLine("Speed er {0}",speed);
             int x;
             int y;
+            int i = 0;
 
-            if (savannah.getAvailableNearbyField(this) == true)
+            //if (savannah.getAvailableNearbyField(this) == true)
+            //{
+            do
             {
-                do
-                {
-                    x = this.posX;
-                    y = this.posY;
-                    x += newPosX.Next(-speed, speed + 1);
-                    y += newPosY.Next(-speed, speed + 1);
+                x = this.posX;
+                y = this.posY;
+                x += newPosX.Next(-speed, speed + 1);
+                y += newPosY.Next(-speed, speed + 1);
 
-                    x = Math.Max(x, 0); // Nu går dyret aldrig udover venstre kant
-                    x = Math.Min(x, 19); // Nu går dyret aldrig udover højre kant
-                    y = Math.Max(y, 0); // Nu går dyret aldrig udover toppen
-                    y = Math.Min(y, 19); // Nu går dyret aldrig udover bunden
+                x = Math.Max(x, 0); // Nu går dyret aldrig udover venstre kant
+                x = Math.Min(x, 19); // Nu går dyret aldrig udover højre kant
+                y = Math.Max(y, 0); // Nu går dyret aldrig udover toppen
+                y = Math.Min(y, 19); // Nu går dyret aldrig udover bunden
+                i++;
 
-                } while (savannah.fields[x, y] == null);
-                this.posX = x;
-                this.posY = y;
-            }
+            } while (savannah.fields[x, y] == null && i < 5);
+            this.posX = x;
+            this.posY = y;
+            //}
 
 
 

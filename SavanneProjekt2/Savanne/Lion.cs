@@ -25,8 +25,6 @@ namespace SavanneProjekt2.Savanne
                     }
                     else
                     {
-                        if (posX + i != posX && posY + j != posY)
-                        {
                             if (savannah.fields[posX + i, posY + j].animal != null)
                             {
                                 if (savannah.fields[posX + i, posY + j].animal is Rabbit)
@@ -38,16 +36,17 @@ namespace SavanneProjekt2.Savanne
                                     mate();
                                 }
                             }
-                        }
                     }
                 }
             }
+            savannah.drawAll();
         }
 
         public void eat(int x, int y)
         {
             this.weight += savannah.fields[x, y].animal.weight;
             savannah.removeAnimal(x, y);
+            savannah.drawAll();
         }
 
         public void mate()
