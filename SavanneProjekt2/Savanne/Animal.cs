@@ -25,7 +25,7 @@ namespace SavanneProjekt2.Savanne
             newPosY = s.rand2;
             posX = x;
             posY = y;
-            gender = new Random().NextDouble() >= 0.5;
+            gender = s.rand1.NextDouble() >= 0.5;
         }
 
         public void move()
@@ -55,6 +55,7 @@ namespace SavanneProjekt2.Savanne
 
             this.posX = x;
             this.posY = y;
+            savannah.drawAll();
             //Console.WriteLine("{0} og {1}", posX, posY);
         }
 

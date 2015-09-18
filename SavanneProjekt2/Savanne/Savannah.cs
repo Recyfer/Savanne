@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using SavanneProjekt2;
@@ -32,7 +33,7 @@ namespace SavanneProjekt2.Savanne
                 }
             }
 
-            for (int i = 0; i < random1.Next(3, 6);)
+            for (int i = 0; i < random1.Next(3, 6); )
             {
                 posX = rand1.Next(0, 20);
                 posY = rand2.Next(0, 20);
@@ -43,7 +44,7 @@ namespace SavanneProjekt2.Savanne
                 }
             }
 
-            for (int i = 0; i < random1.Next(5, 10);)
+            for (int i = 0; i < random1.Next(10, 16); )
             {
                 posX = rand1.Next(0, 20);
                 posY = rand2.Next(0, 20);
@@ -54,7 +55,7 @@ namespace SavanneProjekt2.Savanne
                 }
             }
 
-            for (int i = 0; i < random1.Next(5, 10);)
+            for (int i = 0; i < random1.Next(10, 16); )
             {
                 posX = rand1.Next(0, 20);
                 posY = rand2.Next(0, 20);
@@ -90,6 +91,7 @@ namespace SavanneProjekt2.Savanne
 
         public void removeGrass(int x, int y)
         {
+            grassList.Remove(this.fields[x, y].grass);
             this.fields[x, y].grass = null;
         }
 
@@ -100,13 +102,10 @@ namespace SavanneProjekt2.Savanne
 
         public void addGrass(int x, int y, Grass grass)
         {
+            grassList.Add(grass);
             this.fields[x, y].grass = grass;
         }
 
-        public void killAnimal(int x, int y)
-        {
-            
-        }
 
 
 
@@ -131,16 +130,18 @@ namespace SavanneProjekt2.Savanne
 
         public void createLion()
         {
+            var field = getAvailableField();
             Lion tempLion = new Lion(this, posX, posY);
+            field.animal = tempLion;
             animalList.Add(tempLion);
-            getAvailableField().animal = tempLion;
         }
 
         public void createLion(int x, int y)
         {
-            Lion tempLion = new Lion(this, x, y);
+
             if (fields[x, y].animal == null)
             {
+                Lion tempLion = new Lion(this, x, y);
                 animalList.Add(tempLion);
                 fields[x, y].animal = tempLion;
             }
@@ -148,9 +149,10 @@ namespace SavanneProjekt2.Savanne
 
         public void createRabbit()
         {
+            var field = getAvailableField();
             Rabbit tempRabbit = new Rabbit(this, posX, posY);
+            field.animal = tempRabbit;
             animalList.Add(tempRabbit);
-            getAvailableField().animal = tempRabbit;
         }
 
         public void createRabbit(int x, int y)
@@ -171,7 +173,9 @@ namespace SavanneProjekt2.Savanne
                 posY = rand2.Next(0, 20);
                 if (fields[posX, posY].grass == null)
                 {
-                    fields[posX, posY].grass = new Grass(this, posX, posY);
+                    Grass tempGrass = new Grass(this, posX, posY);
+                    grassList.Add(tempGrass);
+                    fields[posX, posY].grass = tempGrass;
                 }
                 else if (fields[posX, posY].grass != null)
                 {
@@ -187,12 +191,14 @@ namespace SavanneProjekt2.Savanne
             posY = y;
             if (fields[posX, posY].grass == null)
             {
-                fields[posX, posY].grass = new Grass(this, x, y);
+                Grass tempGrass = new Grass(this, x, y);
+                grassList.Add(tempGrass);
+                fields[posX, posY].grass = tempGrass;
             }
         }
-            Bitmap bmp;
-            Graphics grp;
-                    
+        Bitmap bmp;
+        Graphics grp;
+
         public void drawGrid()
         {
 
@@ -220,18 +226,18 @@ namespace SavanneProjekt2.Savanne
         {
             Pen penLion = new Pen(Color.Red, 10);
             Pen penRabbit = new Pen(Color.Blue, 10);
-            foreach (var field in fields)
+            foreach (var animal in animalList)
             {
-                if (field.animal != null)
+                if (animal != null)
                 {
-                    if (field.animal is Lion)
+                    if (animal is Lion)
                     {
-                        grp.DrawRectangle(penLion, (field.animal.posY*20 + 1 + 4), (field.animal.posX*20 + 1 + 4), 10, 10);
+                        grp.DrawRectangle(penLion, (animal.posY * 20 + 1 + 4), (animal.posX * 20 + 1 + 4), 10, 10);
                     }
 
-                    if (field.animal is Rabbit)
+                    if (animal is Rabbit)
                     {
-                        grp.DrawRectangle(penRabbit, (field.animal.posY*20 + 1 + 4), (field.animal.posX*20 + 1 + 4), 10, 10);
+                        grp.DrawRectangle(penRabbit, (animal.posY * 20 + 1 + 4), (animal.posX * 20 + 1 + 4), 10, 10);
                     }
                 }
             }
@@ -244,7 +250,7 @@ namespace SavanneProjekt2.Savanne
             {
                 if (field.grass != null)
                 {
-                        grp.DrawRectangle(penGrass, (field.grass.posY * 20 + 1 + 4), (field.grass.posX * 20 + 1 + 4), 10, 10);
+                    grp.DrawRectangle(penGrass, (field.grass.posY * 20 + 1 + 4), (field.grass.posX * 20 + 1 + 4), 10, 10);
                 }
             }
         }
@@ -258,26 +264,29 @@ namespace SavanneProjekt2.Savanne
 
         public void startAll()
         {
-            //for (int i = 0; i < 5; i++)
-            //{
-                drawAll();
-                Thread.Sleep(1000);
-                foreach (var animal in animalList)
-                {
-                    if (animal != null)
-                    {
-                        int oldX = animal.posX;
-                        int oldY = animal.posY;
 
-                        animal.move();
+            while (animalList.Any(x => x is Rabbit))
+            {
+
+                Thread.Sleep(100);
+                for (int i = 0; i < animalList.Count; i++)
+                {
+                    if (animalList[i] != null)
+                    {
+                        int oldX = animalList[i].posX;
+                        int oldY = animalList[i].posY;
+
+                        animalList[i].move();
 
                         this.fields[oldX, oldY].animal = null;
-                        this.fields[animal.posX, animal.posY].animal = animal;
-
-                        animal.vicinity();
+                        this.fields[animalList[i].posX, animalList[i].posY].animal = animalList[i];
                     }
                 }
-            //}
+                for (int j = 0; j < animalList.Count; j++)
+                {
+                    animalList[j].vicinity();
+                }
+            }
 
         }
 

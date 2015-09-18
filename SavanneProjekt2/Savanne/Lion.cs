@@ -33,8 +33,7 @@ namespace SavanneProjekt2.Savanne
                                 {
                                     eat(posX + i, posY + j);
                                 }
-                                else if (savannah.fields[posX + i, posY + j].animal is Lion && gender == true &&
-                                         savannah.fields[posX + i, posY + j].animal.gender == false)
+                                if (savannah.fields[posX + i, posY + j].animal is Lion && savannah.fields[posX + i, posY + j].animal.gender != this.gender)
                                 {
                                     mate();
                                 }
