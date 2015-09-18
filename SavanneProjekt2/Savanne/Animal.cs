@@ -11,7 +11,7 @@ namespace SavanneProjekt2.Savanne
         public bool gender;
         public int posX;
         public int posY;
-        protected int speed;
+        public int speed;
         protected Random newPosX;
         protected Random newPosY;
 
@@ -34,27 +34,34 @@ namespace SavanneProjekt2.Savanne
             //Console.WriteLine("Speed er {0}",speed);
             int x;
             int y;
-            do
+
+            if (savannah.getAvailableNearbyField(this) == true)
             {
-                x = this.posX;
-                y = this.posY;
-                x += newPosX.Next(-speed, speed + 1);
-                y += newPosY.Next(-speed, speed + 1);
+                do
+                {
+                    x = this.posX;
+                    y = this.posY;
+                    x += newPosX.Next(-speed, speed + 1);
+                    y += newPosY.Next(-speed, speed + 1);
 
-                x = Math.Max(x, 0); // Nu går dyret aldrig udover venstre kant
-                x = Math.Min(x, 19); // Nu går dyret aldrig udover højre kant
-                y = Math.Max(y, 0); // Nu går dyret aldrig udover toppen
-                y = Math.Min(y, 19); // Nu går dyret aldrig udover bunden
+                    x = Math.Max(x, 0); // Nu går dyret aldrig udover venstre kant
+                    x = Math.Min(x, 19); // Nu går dyret aldrig udover højre kant
+                    y = Math.Max(y, 0); // Nu går dyret aldrig udover toppen
+                    y = Math.Min(y, 19); // Nu går dyret aldrig udover bunden
 
-            } while (savannah.fields[x, y] == null);
+                } while (savannah.fields[x, y] == null);
+                this.posX = x;
+                this.posY = y;
+            }
 
-            
+
+
+
 
             //savannah.addAnimal(posX, posY, this);
             //savannah.removeAnimal(x, y);
 
-            this.posX = x;
-            this.posY = y;
+
             savannah.drawAll();
             //Console.WriteLine("{0} og {1}", posX, posY);
         }

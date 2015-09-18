@@ -83,6 +83,30 @@ namespace SavanneProjekt2.Savanne
             }
         }
 
+        public bool getAvailableNearbyField(Animal animal)
+        {
+            for (int i = -animal.speed; i < animal.speed; i++)
+            {
+                for (int j = -animal.speed; j < animal.speed; j++)
+                {
+                    int x = animal.posX + i;
+                    int y = animal.posY + j;
+                    x = Math.Max(x, 0); // Nu går dyret aldrig udover venstre kant
+                    x = Math.Min(x, 19); // Nu går dyret aldrig udover højre kant
+                    y = Math.Max(y, 0); // Nu går dyret aldrig udover toppen
+                    y = Math.Min(y, 19); // Nu går dyret aldrig udover bunden
+
+                    if (this.fields[x, y].animal == null)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+
+
+        }
+
         public void removeAnimal(int x, int y)
         {
             animalList.Remove(this.fields[x, y].animal);
